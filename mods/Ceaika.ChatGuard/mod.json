@@ -1,0 +1,15 @@
+{
+    "Name": "Ceaika.ChatGuard",
+    "Version": "1.0.0",
+    "Description": "Blocks slurs and offensive messages from appearing in chat locally",
+    "LoadPriority": 1,
+    "Scripts": [
+        {
+            "Path": "chat_guard.nut",
+            "RunOn": "CLIENT",
+            "ClientCallback": {
+                "Before": "addCallback"
+            }
+        }
+    ]
+}
