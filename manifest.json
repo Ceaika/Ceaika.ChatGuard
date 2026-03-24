@@ -1,5 +1,5 @@
 {
-    "name": "ChatGuard",
+    "name": "Ceaika.ChatGuard",
     "version_number": "1.0.0",
     "website_url": "https://github.com/Ceaika/Ceaika.ChatGuard",
     "description": "Automatically blocks slurs and offensive messages from appearing in your chat. Includes leet speak detection, repeated character collapsing, and a local notification when a message is blocked.",
