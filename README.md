@@ -8,12 +8,12 @@ A client-side Northstar mod that automatically blocks slurs and offensive messag
 
 ## Features
 
-- **Slur detection** — blocks a wide range of racial, homophobic,and other slurs
-- **Phrase detection** — blocks threatening and hateful phrases commonly used in gaming chat
-- **Leet speak bypass prevention** — converts common leet speak substitutions before checking (e.g. `3x4mpl3` → `example`)
-- **Repeat character collapsing** — catches attempts like `eeeeeexxxxxaaaaaaampppppleeee` by collapsing repeated letters before checking
-- **Separator stripping** — strips dashes, dots, spaces and other characters people insert to evade filters
-- **Local notification** — displays a red `[ChatGuard] [PlayerName] is using offensive language` message in your chat when something is blocked
+- **Slur detection** - blocks a wide range of racial, homophobic,and other slurs
+- **Phrase detection** - blocks threatening and hateful phrases commonly used in gaming chat
+- **Leet speak bypass prevention** - converts common leet speak substitutions before checking (e.g. `3x4mpl3` → `example`)
+- **Repeat character collapsing** - catches attempts like `eeeeeexxxxxaaaaaaampppppleeee` by collapsing repeated letters before checking
+- **Separator stripping** - strips dashes, dots, spaces and other characters people insert to evade filters
+- **Local notification** - displays a red `[ChatGuard] [PlayerName] is using offensive language` message in your chat when something is blocked
 
 ---
 
