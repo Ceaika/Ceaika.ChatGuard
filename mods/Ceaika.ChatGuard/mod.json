@@ -1,14 +1,28 @@
 {
     "Name": "Ceaika.ChatGuard",
-    "Version": "1.0.0",
+    "Version": "1.1.0",
     "Description": "Blocks slurs and offensive messages from appearing in chat locally",
     "LoadPriority": 1,
+    "ConVars": [
+        {
+            "Name": "chatguard_kindness",
+            "DefaultValue": "0",
+            "Flags": "FCVAR_ARCHIVE_PLAYERPROFILE"
+        }
+    ],
     "Scripts": [
         {
             "Path": "chat_guard.nut",
             "RunOn": "CLIENT",
             "ClientCallback": {
                 "Before": "addCallback"
+            }
+        },
+        {
+            "Path": "chat_guard_settings.nut",
+            "RunOn": "UI",
+            "UICallback": {
+                "Before": "ChatGuard_AddModSettings"
             }
         }
     ]
