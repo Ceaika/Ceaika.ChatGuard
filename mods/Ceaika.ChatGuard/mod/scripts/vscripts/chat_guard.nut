@@ -129,7 +129,6 @@ ClClient_MessageStruct function callbacktest( ClClient_MessageStruct message )
 
     message.shouldBlock = true
     Chat_GameWriteLine( "\x1b[31m[ChatGuard] " + message.playerName + " is using offensive language\x1b[0m" )
-    Chat_NetworkWriteLine( "\x1b[31m[ChatGuard] " + message.playerName + " is using offensive language\x1b[0m" )
     return message
 }
 
