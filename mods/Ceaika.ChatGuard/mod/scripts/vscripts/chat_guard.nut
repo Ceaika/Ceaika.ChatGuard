@@ -1,10 +1,37 @@
 global function addCallback
+global function ReplaceAll
 global function CollapseRepeats
 global function ConvertLeetSpeak
 global function ContainsSlur
 global function callbacktest
 
-//if someone tries to make a slur by spamming the letters multiple times
+array<string> KIND_MESSAGES = [
+    "I'm having a stressful day, please excuse my manners.",
+    "Teamwork makes the dream work!",
+    "Thanks for the fun match!",
+    "You all play really well out there!",
+    "Let's keep it friendly out here.",
+    "I wonder sometimes if the enemy team is having fun too!",
+    "I am trying to control my anger issues, please bear with me.",
+    "Respect to all players in this match.",
+    "May the best pilot win!",
+    "No hard feelings, just having fun!",
+    "I hope everyone is enjoying the game as much as I am!",
+    "Let's keep the chat positive and supportive!",
+    "Remember, we're all here to have fun and improve our skills!",
+    "I hope Titanfall 3 is released some day",
+    "My mouth was recently washed with soap!"
+]
+
+string function ReplaceAll( string text, string from, string to )
+{
+    while ( text.find( from ) != null )
+    {
+        text = StringReplace( text, from, to )
+    }
+    return text
+}
+
 string function CollapseRepeats( string text )
 {
     string result = ""
@@ -25,33 +52,19 @@ string function CollapseRepeats( string text )
 
 string function ConvertLeetSpeak( string text )
 {
-    text = StringReplace( text, "\\/\\/", "w", true, false )
-    text = StringReplace( text, "|-|",    "h", true, false )
-    text = StringReplace( text, "|_|",    "u", true, false )
-    text = StringReplace( text, "|\\/|",  "m", true, false )
-    text = StringReplace( text, "|\\|",   "n", true, false )
-    text = StringReplace( text, "|<",     "k", true, false )
-    text = StringReplace( text, "|>",     "p", true, false )
-    text = StringReplace( text, "|3",     "b", true, false )
-    text = StringReplace( text, "|2",     "r", true, false )
-    text = StringReplace( text, "_|",     "j", true, false )
-    text = StringReplace( text, "(|",     "q", true, false )
-    text = StringReplace( text, "\\/",    "v", true, false )
-    text = StringReplace( text, "><",     "x", true, false )
-    text = StringReplace( text, "ph",     "f", true, false )
-    text = StringReplace( text, "1",      "i", true, false )
-    text = StringReplace( text, "!",      "i", true, false )
-    text = StringReplace( text, "@",      "a", true, false )
-    text = StringReplace( text, "4",      "a", true, false )
-    text = StringReplace( text, "3",      "e", true, false )
-    text = StringReplace( text, "0",      "o", true, false )
-    text = StringReplace( text, "9",      "g", true, false )
-    text = StringReplace( text, "5",      "s", true, false )
-    text = StringReplace( text, "7",      "t", true, false )
-    text = StringReplace( text, "$",      "s", true, false )
-    text = StringReplace( text, "+",      "t", true, false )
-    text = StringReplace( text, "|",      "i", true, false )
-    text = StringReplace( text, "(",      "c", true, false )
+    array<array<string> > subs = [
+        ["\\/\\/", "w"], ["|-|", "h"], ["|_|", "u"], ["|\\/|", "m"],
+        ["|\\|", "n"],   ["|<",  "k"], ["|>",  "p"], ["|3",   "b"],
+        ["|2",   "r"],   ["_|",  "j"], ["(|",  "q"], ["\\/",  "v"],
+        ["><",   "x"],   ["ph",  "f"], ["1",   "i"], ["!",    "i"],
+        ["@",    "a"],   ["4",   "a"], ["3",   "e"], ["0",    "o"],
+        ["9",    "g"],   ["5",   "s"], ["7",   "t"], ["$",    "s"],
+        ["+",    "t"],   ["|",   "i"], ["(",   "c"]
+    ]
+    foreach ( sub in subs )
+    {
+        text = ReplaceAll( text, sub[0], sub[1] )
+    }
     return text
 }
 
@@ -59,77 +72,64 @@ bool function ContainsSlur( string text )
 {
     string lower = text.tolower()
 
-    lower = StringReplace( lower, "-",  "", true, false )
-    lower = StringReplace( lower, "_",  "", true, false )
-    lower = StringReplace( lower, ".",  "", true, false )
-    lower = StringReplace( lower, " ",  "", true, false )
-    lower = StringReplace( lower, "*",  "", true, false )
-    lower = StringReplace( lower, "/",  "", true, false )
-    lower = StringReplace( lower, "\\", "", true, false )
-    lower = StringReplace( lower, "~",  "", true, false )
-    lower = StringReplace( lower, ",",  "", true, false )
+    array<string> separators = ["-", "_", ".", " ", "*", "/", "\\", "~", ","]
+    foreach ( sep in separators )
+    {
+        lower = ReplaceAll( lower, sep, "" )
+    }
 
     lower = ConvertLeetSpeak( lower )
     lower = CollapseRepeats( lower )
 
-    // ------Slurs ---------------------------------------------------------------------
-    if ( lower.find( "nigger" ) != null ) return true
-    if ( lower.find( "nigga" ) != null ) return true
-    if ( lower.find( "nigg" ) != null ) return true
-    if ( lower.find( "niga" ) != null ) return true
-    if ( lower.find( "faggot" ) != null ) return true
-    if ( lower.find( "fagot" ) != null ) return true
-    if ( lower.find( "faget" ) != null ) return true
-    if ( lower.find( "retard" ) != null ) return true
-    if ( lower.find( "gay" ) != null ) return true
-    if ( lower.find( "homosexual" ) != null ) return true
-    if ( lower.find( "tard" ) != null ) return true
-    if ( lower.find( "retar" ) != null ) return true
-    if ( lower.find( "niger" ) != null ) return true
-    if ( lower.find( "nig" ) != null ) return true
-    if ( lower.find( "negr" ) != null ) return true
-    if ( lower.find( "heil" ) != null ) return true
+    array<string> slurs = [
+        "nigger", "nigga", "nigg", "niga",
+        "faggot", "fagot", "faget",
+        "retard", "retar", "tard",
+        "gay", "homosexual",
+        "niger", "nig"
+    ]
+    foreach ( slur in slurs )
+    {
+        if ( lower.find( slur ) != null ) return true
+    }
 
-    // ------Phrases ---------------------------------------------------------------------
+    array<string> phrases = [
+        "kill yourself", "kill ur self", "kill your self", "kys",
+        "hang yourself", "hang urself",
+        "rope yourself", "rope urself",
+        "shoot yourself", "shoot urself",
+        "slit your wrist", "slit ur wrist",
+        "drink bleach",
+        "heil hitler", "sieg heil",
+        "white power", "white supremacy", "master race", "ethnic cleansing",
+        "get swatted",
+        "i know where you live", "i know where u live",
+        "rape you", "rape ur", "gonna rape"
+    ]
     string lowerOriginal = text.tolower()
-    if ( lowerOriginal.find( "kill yourself" ) != null ) return true
-    if ( lowerOriginal.find( "kill ur self" ) != null ) return true
-    if ( lowerOriginal.find( "kill your self" ) != null ) return true
-    if ( lowerOriginal.find( "kys" ) != null ) return true
-    if ( lowerOriginal.find( "hang yourself" ) != null ) return true
-    if ( lowerOriginal.find( "hang urself" ) != null ) return true
-    if ( lowerOriginal.find( "rope yourself" ) != null ) return true
-    if ( lowerOriginal.find( "rope urself" ) != null ) return true
-    if ( lowerOriginal.find( "shoot yourself" ) != null ) return true
-    if ( lowerOriginal.find( "shoot urself" ) != null ) return true
-    if ( lowerOriginal.find( "slit your wrist" ) != null ) return true
-    if ( lowerOriginal.find( "slit ur wrist" ) != null ) return true
-    if ( lowerOriginal.find( "drink bleach" ) != null ) return true
-    if ( lowerOriginal.find( "heil hitler" ) != null ) return true
-    if ( lowerOriginal.find( "sieg heil" ) != null ) return true
-    if ( lowerOriginal.find( "white power" ) != null ) return true
-    if ( lowerOriginal.find( "white supremacy" ) != null ) return true
-    if ( lowerOriginal.find( "master race" ) != null ) return true
-    if ( lowerOriginal.find( "ethnic cleansing" ) != null ) return true
-    if ( lowerOriginal.find( "get swatted" ) != null ) return true
-    if ( lowerOriginal.find( "i know where you live" ) != null ) return true
-    if ( lowerOriginal.find( "i know where u live" ) != null ) return true
-    if ( lowerOriginal.find( "rape you" ) != null ) return true
-    if ( lowerOriginal.find( "rape ur" ) != null ) return true
-    if ( lowerOriginal.find( "gonna rape" ) != null ) return true
+    foreach ( phrase in phrases )
+    {
+        if ( lowerOriginal.find( phrase ) != null ) return true
+    }
 
     return false
 }
 
 ClClient_MessageStruct function callbacktest( ClClient_MessageStruct message )
 {
-    if ( ContainsSlur( message.message ) )
+    if ( !ContainsSlur( message.message ) )
+        return message
+
+    if ( GetConVarBool( "chatguard_kindness" ) )
     {
-        message.shouldBlock = true
-        Chat_GameWriteLine( "\x1b[31m[ChatGuard] " + message.playerName + " is using offensive language\x1b[0m" )
-        Chat_NetworkWriteLine( "\x1b[31m[ChatGuard] " + message.playerName + " is using offensive language\x1b[0m" )
+        int idx = RandomInt( KIND_MESSAGES.len() )
+        message.message = "\x1b[110m" + KIND_MESSAGES[ idx ] + "\x1b[0m"
         return message
     }
+
+    message.shouldBlock = true
+    Chat_GameWriteLine( "\x1b[31m[ChatGuard] " + message.playerName + " is using offensive language\x1b[0m" )
+    Chat_NetworkWriteLine( "\x1b[31m[ChatGuard] " + message.playerName + " is using offensive language\x1b[0m" )
     return message
 }
 
@@ -137,8 +137,3 @@ void function addCallback()
 {
     AddCallback_OnReceivedSayTextMessage( callbacktest )
 }
-
-//credits to Swifty8Bit for the original code structure and idea, 
-//I compiled it for Squirrel and added a bit more functionality to it, 
-//such as leet speak conversion and repeat collapsing. 
-//I also added some more slurs and phrases to the list, but feel free to add more if you want.
